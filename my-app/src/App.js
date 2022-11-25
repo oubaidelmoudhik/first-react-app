@@ -1,23 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Filters from "./Components/Filters";
+import ProductsList from "./Components/ProductsList";
+import productsData from "./Components/ProductsData";
+import { useState } from "react";
+// import Hello from "./Components/Hello";
+// import Welcome from "./Components/Welcome";
 
 function App() {
+  const priceArr = productsData.map((el) => el.price);
+  const [minValue, setMinValue] = useState(Math.min(...priceArr));
+  const [maxValue, setMaxValue] = useState(Math.max(...priceArr));
+
+  function handleMaxChange(e) {
+    setMaxValue(e.target.value);
+  }
+  function handleMinChange(e) {
+    setMinValue(e.target.value);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Filters
+        maxPrice={Math.round(maxValue)}
+        minPrice={Math.floor(minValue)}
+        handleMaxChange={handleMaxChange}
+        handleMinChange={handleMinChange}
+        pricesArr={priceArr}
+      />
+      <ProductsList
+        maxPrice={Math.round(maxValue)}
+        minPrice={Math.floor(minValue)}
+        productsData={productsData}
+      />
     </div>
   );
 }
